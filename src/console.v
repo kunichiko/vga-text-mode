@@ -17,7 +17,7 @@ glyphmap glyphmap(.codepoint(codepoint), .glyph(glyph));
 
 wire [23:0] fgrgb, bgrgb;
 wire blink;
-attributemap attributemap(.attribute(charattr), .fgrgb(fgrgb), .bgrgb(bgrgb), .blink(blink));
+attributemap attributemap(.charattr(charattr), .fgrgb(fgrgb), .bgrgb(bgrgb), .blink(blink));
 
 reg [BIT_HEIGHT-1:0] prevcy = 0;
 reg [$clog2(FONT_HEIGHT)-1:0] vindex = 0;
