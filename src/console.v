@@ -6,7 +6,7 @@ module console # (
 ) (
     input wire clk_pixel,
     input wire [7:0] codepoint,
-    input wire [7:0] attribute,
+    input wire [7:0] charattr,
     input wire [BIT_WIDTH-1:0] cx,
     input wire [BIT_HEIGHT-1:0] cy,
     output reg [23:0] rgb = 24'd0
@@ -17,7 +17,7 @@ glyphmap glyphmap(.codepoint(codepoint), .glyph(glyph));
 
 wire [23:0] fgrgb, bgrgb;
 wire blink;
-attributemap attributemap(.attribute(attribute), .fgrgb(fgrgb), .bgrgb(bgrgb), .blink(blink));
+attributemap attributemap(.attribute(charattr), .fgrgb(fgrgb), .bgrgb(bgrgb), .blink(blink));
 
 reg [BIT_HEIGHT-1:0] prevcy = 0;
 reg [$clog2(FONT_HEIGHT)-1:0] vindex = 0;
