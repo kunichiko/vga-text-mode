@@ -17,12 +17,16 @@ glyphmap glyphmap(.codepoint(codepoint), .glyph(glyph));
 
 wire [23:0] fgrgb, bgrgb;
 wire blink;
+wire glyph_bit;
+reg glyph_bit_d = 0;
 attributemap attributemap(.charattr(charattr), .fgrgb(fgrgb), .bgrgb(bgrgb), .blink(blink));
 
 reg [BIT_HEIGHT-1:0] prevcy = 0;
 reg [$clog2(FONT_HEIGHT)-1:0] vindex = 0;
 reg [$clog2(FONT_WIDTH)-1:0] hindex = 0;
 reg [5:0] blink_timer = 0;
+
+assign glyph_bit = glyph[{~vindex, ~hindex}];
 
 always @(posedge clk_pixel)
 begin
@@ -46,7 +50,13 @@ begin
 
     if (blink && blink_timer[5])
         rgb <= bgrgb;
-    else
-        rgb <= glyph[{~vindex, ~hindex}] ? fgrgb : bgrgb;
+    else begin
+        glyph_bit_d <= glyph_bit;
+        //if ((hindex > 0) && (hindex < 7)) 
+        if (hindex > 0)
+            rgb <= (glyph_bit || glyph_bit_d) ? fgrgb : bgrgb;
+        else
+            rgb <= glyph_bit ? fgrgb : bgrgb;
+    end
 end
 endmodule
